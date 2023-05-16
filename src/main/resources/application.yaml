@@ -1,0 +1,58 @@
+logging:
+   level:
+      root: INFO
+server:
+   port: 10000
+spring:
+   jpa:
+      database-platform: org.hibernate.dialect.H2Dialect
+      defer-datasource-initialization: true
+      generate-ddl: true
+      hibernate:
+         ddl-auto: update
+   datasource:
+      url: jdbc:h2:file:/tmp/data
+      driverClassName: org.h2.Driver
+      username: sa
+      password: password
+      initialization-mode: always
+   h2:
+      console:
+         enabled: true
+         path: /h2-console
+         settings.trace: false
+         settings.web-allow-others: false
+management:
+   endpoints:
+      web:
+         exposure:
+            include: "*"
+#springdoc:
+#   show-actuator: true
+# scim2:
+#   resourcesPackage: com.prgx.deductionManagement.service
+#   baseUrl: http://localhost:8080
+#   service-provider-config:
+#     documentationUri: http://www.simplecloud.info
+#     patch:
+#       supported: true
+#     bulk:
+#       supported: false
+#       maxOperations: 1000
+#       maxPayloadSize: 10000
+#     filter:
+#       supported: true
+#       maxResults: 25
+#     change-password:
+#       supported: true
+#     sort:
+#       supported: true
+#     etag:
+#       supported: true
+#     authenticationSchemes:
+#         - name: OAuth Bearer Token
+#           description: Authentication Scheme using OAuth Bearer Token Standard
+#           specUri: http://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-01
+#           documentationUri: http://example.com/help/oauth.html
+#           type: oauthbearertoken
+#           primary: true
