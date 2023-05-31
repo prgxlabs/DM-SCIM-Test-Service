@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.prgx.deductionManagement</groupId>
-	<artifactId>SCIMTestService</artifactId>
+	<artifactId>scim-test-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>SCIMTestService</name>
 	<description>SCIM Test Service</description>

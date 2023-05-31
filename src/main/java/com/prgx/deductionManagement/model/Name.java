@@ -28,7 +28,7 @@ public class Name {
     @Column(columnDefinition = "uuid")
     @JsonIgnore
     private UUID id;
-    @Transient
+    /*@Transient
     @PostConstruct
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public String formatted() {
@@ -45,7 +45,7 @@ public class Name {
             formattedName.append(honorificSuffix.trim()).append(" ");
         }
         return formattedName.toString();
-    }
+    }*/
     @NotNull
     @Size.List({
             @Size(min = 2, message = "{validation.user.name.size.short}"),
@@ -58,10 +58,10 @@ public class Name {
             @Size(max = 50, message = "{validation.user.name.size.long}")
     })
     private String givenName;
-    @Nullable
+    /*@Nullable
     private String middleName;
     @Nullable
     private String honorificPrefix;
     @Nullable
-    private String honorificSuffix;
+    private String honorificSuffix;*/
 }

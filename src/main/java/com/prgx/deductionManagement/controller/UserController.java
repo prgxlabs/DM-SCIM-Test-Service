@@ -24,9 +24,10 @@ import java.util.Optional;
 @RequestMapping(value = "/users")
 public class UserController {
 
+    private static final String SCIM_MEDIA_TYPE = "application/scim+json";
     @Autowired
     private UserService userService;
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/", produces = SCIM_MEDIA_TYPE)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public List<UserResourceRef> listUsers(
@@ -44,7 +45,7 @@ public class UserController {
         return userService.listUsers(pageable);
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = SCIM_MEDIA_TYPE)
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<UserResource> getUser(@PathVariable String id){
         Optional<UserResource> user = userService.getUser(id);
@@ -53,7 +54,7 @@ public class UserController {
                 : new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/", consumes = SCIM_MEDIA_TYPE, produces = SCIM_MEDIA_TYPE)
     @ResponseStatus(value = HttpStatus.CREATED)
     public ResponseEntity<UserResource> createUser (
             @Valid @RequestBody UserResource userResource
@@ -67,7 +68,7 @@ public class UserController {
         return new ResponseEntity<>(userService.createUser(userResource), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}", consumes = SCIM_MEDIA_TYPE, produces = SCIM_MEDIA_TYPE)
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<UserResource> updateUser (
             @PathVariable String id,
