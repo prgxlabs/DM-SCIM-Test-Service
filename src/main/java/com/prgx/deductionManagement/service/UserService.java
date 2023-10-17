@@ -4,6 +4,7 @@ import com.prgx.deductionManagement.model.Address;
 import com.prgx.deductionManagement.model.UserResource;
 import com.prgx.deductionManagement.model.UserResourceRef;
 import com.prgx.deductionManagement.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class UserService {
         return userRepository.findAll(pageable).stream()
                 .map((userResource)-> {
                     return UserResourceRef.builder()
-                            .username(userResource.getUsername())
+                            .userName(userResource.getUserName())
                             .id(userResource.getId())
                             .build();
                 }).toList();
@@ -29,10 +30,12 @@ public class UserService {
     public Optional<UserResource> getUser(String id){
         return userRepository.findById(id);
     }
+    @Transactional
     public UserResource createUser(UserResource user){
         return userRepository.save(user);
     }
 
+    @Transactional
     public UserResource updateUser(UserResource user){
         return userRepository.save(user);
     }

@@ -1,7 +1,5 @@
 package com.prgx.deductionManagement.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.Nullable;
@@ -13,7 +11,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
 
 
 @Data
@@ -22,7 +19,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserResource {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -36,7 +33,7 @@ public class UserResource {
     private Meta meta;
     @NotNull
     @Column(nullable = false, unique = true)
-    private String username;
+    private String userName;
     @Nullable
     @OneToOne(cascade = CascadeType.ALL)
     private Name name;
