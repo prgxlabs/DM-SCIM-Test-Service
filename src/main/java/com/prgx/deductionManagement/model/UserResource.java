@@ -1,7 +1,7 @@
 package com.prgx.deductionManagement.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -19,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserResource {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -32,22 +33,22 @@ public class UserResource {
     private Meta meta;
     @NotNull
     @Column(nullable = false, unique = true)
-    private String username;
+    private String userName;
     @Nullable
     @OneToOne(cascade = CascadeType.ALL)
     private Name name;
-    @Nullable
+    /*@Nullable
     private String displayName;
     @Nullable
     private String nickName;
     @Nullable
-    private String profileUrl;
+    private String profileUrl;*/
     @Nullable
     private Boolean active;
     @Nullable
     @OneToMany(cascade = CascadeType.ALL)
     private List<Email> emails;
-    @Nullable
+    /*@Nullable
     @OneToMany(cascade = CascadeType.ALL)
     private List<PhoneNumber> phoneNumbers;
     @Nullable
@@ -67,5 +68,9 @@ public class UserResource {
     private List<UserRoleRef> roles;
     @Nullable
     @OneToMany(cascade = CascadeType.ALL)
-    private List<X509Certificate> x509Certificates;
+    private List<X509Certificate> x509Certificates;*/
+    @Nullable
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonProperty("urn:com:kroger:ess:vendorsso:v1:lavante:User")
+    private LavanteUser lavanteUser;
 }

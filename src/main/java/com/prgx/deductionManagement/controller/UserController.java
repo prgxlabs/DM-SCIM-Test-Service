@@ -1,8 +1,11 @@
 package com.prgx.deductionManagement.controller;
 
+import com.prgx.deductionManagement.model.Meta;
 import com.prgx.deductionManagement.model.UserResource;
 import com.prgx.deductionManagement.model.UserResourceRef;
 import com.prgx.deductionManagement.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -24,16 +27,18 @@ import java.util.Optional;
 @RequestMapping(value = "/users")
 public class UserController {
 
+    private static final String SCIM_MEDIA_TYPE = "application/scim+json";
     @Autowired
     private UserService userService;
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/", produces = SCIM_MEDIA_TYPE)
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "Get a list of all users in the system", description = "List users")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public List<UserResourceRef> listUsers(
-            @RequestHeader(value = "If-Not-Match", required = false) UserResource user,
             @RequestParam(required = false) String[] attributes,
             @RequestParam(required = false) String[] excludedAttributes,
-            @RequestParam(required = false, defaultValue = "username") String sortBy,
+            @RequestParam(required = false, defaultValue = "userName") String sortBy,
             @RequestParam(required = false, defaultValue = "descending") String sortOrder,
             @RequestParam(required = false, defaultValue = "0") Integer startIndex,
             @RequestParam(required = false, defaultValue = "20") Integer count
@@ -44,7 +49,9 @@ public class UserController {
         return userService.listUsers(pageable);
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = SCIM_MEDIA_TYPE)
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "Get a specific user in the system", description = "Get user by userId")
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<UserResource> getUser(@PathVariable String id){
         Optional<UserResource> user = userService.getUser(id);
@@ -53,7 +60,9 @@ public class UserController {
                 : new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/", consumes = SCIM_MEDIA_TYPE, produces = SCIM_MEDIA_TYPE)
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "Create a new user in the system", description = "Create new user")
     @ResponseStatus(value = HttpStatus.CREATED)
     public ResponseEntity<UserResource> createUser (
             @Valid @RequestBody UserResource userResource
@@ -64,10 +73,15 @@ public class UserController {
         if(userResource.getActive()==null){
             userResource.setActive(Boolean.FALSE);
         }
+        Meta meta = new Meta();
+        meta.setResourceType("User");
+        userResource.setMeta(meta);
         return new ResponseEntity<>(userService.createUser(userResource), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    /*@PutMapping(value = "/{id}", consumes = SCIM_MEDIA_TYPE, produces = SCIM_MEDIA_TYPE)
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "Update an existing user in the system", description = "Update existing user")
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<UserResource> updateUser (
             @PathVariable String id,
@@ -81,7 +95,7 @@ public class UserController {
             userResource.setActive(Boolean.FALSE);
         }
         return new ResponseEntity<>(userService.updateUser(userResource), HttpStatus.OK);
-    }
+    }*/
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)

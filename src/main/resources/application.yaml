@@ -9,7 +9,7 @@ spring:
       defer-datasource-initialization: true
       generate-ddl: true
       hibernate:
-         ddl-auto: update
+         ddl-auto: create-drop
    datasource:
       url: jdbc:h2:file:/tmp/data
       driverClassName: org.h2.Driver
@@ -22,6 +22,21 @@ spring:
          path: /h2-console
          settings.trace: false
          settings.web-allow-others: false
+   security:
+      oauth2:
+         resourceserver:
+            jwt:
+               issuer-uri: https://signon-dev.prgx.com/auth/realms/deduction-mgmt-web
+         client:
+            registration:
+               keycloak:
+                  client-id: dm-web-client
+                  authorization-grant-type: authorization_code
+                  scope: openid
+            provider:
+              keycloak:
+                 issuer-uri: https://signon-dev.prgx.com/auth/realms/deduction-mgmt-web
+                 user-name-attribute: preferred_username
 management:
    endpoints:
       web:

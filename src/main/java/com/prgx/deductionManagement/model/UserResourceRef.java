@@ -19,5 +19,5 @@ public class UserResourceRef implements Serializable {
     private String id;
     @NotNull
     @Column(nullable = false, unique = true)
-    private String username;
+    private String userName;
 }
